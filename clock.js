@@ -36,10 +36,11 @@ function createClockMarkers() {
   const totalMarkers =
     hoursPerDay * 5;
 
-  for (let markerNumber = 0;
-       markerNumber < totalMarkers;
-       markerNumber++) {
-
+  for (
+    let markerNumber = 0;
+    markerNumber < totalMarkers;
+    markerNumber++
+  ) {
     const marker =
       document.createElement("div");
 
@@ -47,6 +48,7 @@ function createClockMarkers() {
       markerNumber * (360 / totalMarkers);
 
     marker.className = "clock-marker";
+
     marker.style.setProperty(
       "--rotation",
       `${rotation}deg`
@@ -58,18 +60,23 @@ function createClockMarkers() {
     if (isHourMarker) {
       marker.classList.add("major");
 
-      const number =
-        document.createElement("span");
-
       const hourNumber =
         markerNumber === 0
           ? hoursPerDay
           : markerNumber / 5;
 
-      number.className = "clock-number";
-      number.textContent = hourNumber;
+      const shouldShowNumber =
+        hourNumber % 2 === 0;
 
-      marker.appendChild(number);
+      if (shouldShowNumber) {
+        const number =
+          document.createElement("span");
+
+        number.className = "clock-number";
+        number.textContent = hourNumber;
+
+        marker.appendChild(number);
+      }
     }
 
     markerContainer.appendChild(marker);
