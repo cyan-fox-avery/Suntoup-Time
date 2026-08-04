@@ -1,25 +1,36 @@
 :root {
   color-scheme: dark;
 
-  --background: #080a0f;
-  --panel: #141821;
-  --panel-border: #2d3545;
-  --text: #f4f6fb;
-  --muted: #aab2c3;
+  --background: #07090e;
+  --panel: #131821;
+  --panel-border: #30394a;
+  --dial-edge: #394459;
+  --text: #f5f7fb;
+  --muted: #aeb7c8;
+  --dim: #687387;
   --accent: #ff405f;
-  --glow: rgba(255, 64, 95, 0.3);
+  --glow: rgba(255, 64, 95, 0.28);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
+body {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
 
   background:
-    radial-gradient(circle at top, #1a2030 0%, var(--background) 52%);
+    radial-gradient(
+      circle at top,
+      #192132 0%,
+      #0d111a 42%,
+      var(--background) 76%
+    );
 
   color: var(--text);
 
@@ -35,52 +46,57 @@ main {
   min-height: 100vh;
 
   margin: 0 auto;
-  padding: 48px 20px 64px;
+  padding: 28px 18px 44px;
 
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
-h1 {
-  margin: 0 0 30px;
-
-  text-align: center;
-
-  font-size: clamp(2.4rem, 10vw, 4.4rem);
-  line-height: 0.92;
-  letter-spacing: -0.045em;
-}
-
-/*
-The Earth clock is being removed from the finished design.
-This hides it until we clean up index.html.
-*/
-.clock:not(.suntoup-clock) {
-  display: none;
-}
-
 .clock {
-  padding: 30px 18px 34px;
+  width: 100%;
+  padding: 28px 18px 30px;
 
   text-align: center;
 
-  background: rgba(20, 24, 33, 0.94);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(22, 27, 38, 0.97),
+      rgba(15, 19, 27, 0.97)
+    );
+
   border: 1px solid var(--panel-border);
-  border-radius: 28px;
+  border-radius: 30px;
 
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.38);
+    0 26px 80px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
-.clock h2 {
-  margin: 0 0 12px;
+.instrument-heading {
+  margin-bottom: 20px;
+}
+
+.instrument-heading h1 {
+  margin: 0;
+
+  font-size: clamp(2.4rem, 11vw, 4.8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: 0.16em;
+
+  text-indent: 0.16em;
+}
+
+.instrument-heading p {
+  margin: 12px 0 0;
 
   color: var(--muted);
 
-  font-size: 1rem;
-  font-weight: 750;
-  letter-spacing: 0.24em;
+  font-size: clamp(0.72rem, 3vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
@@ -90,24 +106,25 @@ This hides it until we clean up index.html.
   width: min(82vw, 430px);
   aspect-ratio: 1;
 
-  margin: 22px auto 10px;
+  margin: 0 auto;
 
   overflow: hidden;
 
-  border: 2px solid var(--panel-border);
+  border: 2px solid var(--dial-edge);
   border-radius: 50%;
 
   background:
     radial-gradient(
-      circle at center,
-      #1c2230 0%,
-      #121720 66%,
-      #090c12 100%
+      circle at 50% 45%,
+      #202838 0%,
+      #151b26 53%,
+      #0b0f16 100%
     );
 
   box-shadow:
-    inset 0 0 48px rgba(0, 0, 0, 0.62),
-    0 0 36px rgba(255, 64, 95, 0.08);
+    inset 0 0 54px rgba(0, 0, 0, 0.68),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.018),
+    0 0 36px rgba(255, 64, 95, 0.07);
 }
 
 #clock-markers {
@@ -126,34 +143,37 @@ This hides it until we clean up index.html.
   content: "";
 
   position: absolute;
-  top: 9px;
+  top: 10px;
   left: 50%;
 
   width: 2px;
   height: 8px;
 
-  background: #657083;
+  background: var(--dim);
   border-radius: 999px;
 
   transform: translateX(-50%);
 }
 
 .clock-marker.major::before {
-  width: 3px;
-  height: 17px;
+  width: 4px;
+  height: 18px;
 
   background: var(--text);
+
+  box-shadow:
+    0 0 4px rgba(245, 247, 251, 0.18);
 }
 
 .clock-number {
   position: absolute;
-  top: 30px;
+  top: 34px;
   left: 50%;
 
   color: var(--muted);
 
-  font-size: clamp(0.68rem, 2.6vw, 0.88rem);
-  font-weight: 750;
+  font-size: clamp(0.7rem, 2.8vw, 0.92rem);
+  font-weight: 760;
   font-variant-numeric: tabular-nums;
 
   transform:
@@ -178,20 +198,30 @@ This hides it until we clean up index.html.
 }
 
 .hour-hand {
-  width: 7px;
-  height: 25%;
+  width: 8px;
+  height: 21%;
 
-  background: var(--text);
+  background:
+    linear-gradient(
+      to top,
+      #dce1eb,
+      var(--text)
+    );
 
   box-shadow:
-    0 0 9px rgba(244, 246, 251, 0.12);
+    0 0 8px rgba(245, 247, 251, 0.13);
 }
 
 .minute-hand {
-  width: 4px;
-  height: 35%;
+  width: 5px;
+  height: 33%;
 
-  background: #cbd2df;
+  background:
+    linear-gradient(
+      to top,
+      #9ea8ba,
+      #d9dfeb
+    );
 }
 
 .second-hand {
@@ -204,22 +234,41 @@ This hides it until we clean up index.html.
     0 0 12px var(--glow);
 }
 
+.second-hand::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+
+  width: 4px;
+  height: 34px;
+
+  background: var(--accent);
+  border-radius: 999px;
+
+  transform: translateX(-50%);
+
+  box-shadow:
+    0 0 10px var(--glow);
+}
+
 .clock-centre {
   position: absolute;
   top: 50%;
   left: 50%;
 
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
 
   background: var(--accent);
-  border: 3px solid var(--text);
+  border: 4px solid var(--text);
   border-radius: 50%;
 
   transform: translate(-50%, -50%);
 
   box-shadow:
-    0 0 14px var(--glow);
+    0 0 16px var(--glow);
 }
 
 #suntoup-time {
@@ -228,41 +277,55 @@ This hides it until we clean up index.html.
   color: var(--accent);
 
   font-size: clamp(2.7rem, 13vw, 5rem);
-  font-weight: 750;
+  font-weight: 780;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.035em;
 
   text-shadow:
-    0 0 26px var(--glow);
+    0 0 24px var(--glow);
 }
 
-@media (max-height: 740px) {
-  main {
-    justify-content: flex-start;
-    padding-top: 26px;
-  }
+.instrument-note {
+  margin: 14px 0 0;
 
-  h1 {
-    margin-bottom: 20px;
+  color: var(--dim);
+
+  font-size: clamp(0.68rem, 2.8vw, 0.84rem);
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-height: 760px) {
+  main {
+    align-items: flex-start;
+    padding-top: 18px;
   }
 
   .clock {
     padding-top: 22px;
   }
 
+  .instrument-heading {
+    margin-bottom: 14px;
+  }
+
   .analog-clock {
     width: min(72vw, 350px);
-    margin-top: 14px;
+  }
+
+  #suntoup-time {
+    margin-top: 18px;
   }
 }
 
 @media (min-width: 700px) {
   main {
-    padding-top: 72px;
-    padding-bottom: 88px;
+    padding-top: 56px;
+    padding-bottom: 72px;
   }
 
   .clock {
-    padding: 40px 34px 44px;
+    padding: 38px 34px 40px;
   }
 }
