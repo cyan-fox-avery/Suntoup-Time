@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Suntoup Standard Time</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080a0f"
+    >
+
+    <title>SST | Suntoup Standard Time</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,39 +22,57 @@
 
     <main>
 
-        <h1>Suntoup Standard Time</h1>
+        <section
+            class="clock suntoup-clock"
+            aria-label="Suntoup Standard Time clock"
+        >
 
-        <section class="clock">
+            <header class="instrument-heading">
 
-            <h2 id="earth-label">
-                Local Time (Earth)
-            </h2>
+                <h1>SST</h1>
 
-            <div id="earth-time">
-                --:--:--
-            </div>
+                <p>
+                    Suntoup Standard Time
+                </p>
 
-        </section>
+            </header>
 
-        <section class="clock suntoup-clock">
-
-            <h2>Suntoup</h2>
-
-            <div class="analog-clock" aria-label="Analog Suntoup clock">
+            <div
+                class="analog-clock"
+                aria-label="Analog 40-hour Suntoup clock"
+            >
 
                 <div id="clock-markers"></div>
 
-                <div class="clock-hand hour-hand" id="hour-hand"></div>
-                <div class="clock-hand minute-hand" id="minute-hand"></div>
-                <div class="clock-hand second-hand" id="second-hand"></div>
+                <div
+                    class="clock-hand hour-hand"
+                    id="hour-hand"
+                ></div>
+
+                <div
+                    class="clock-hand minute-hand"
+                    id="minute-hand"
+                ></div>
+
+                <div
+                    class="clock-hand second-hand"
+                    id="second-hand"
+                ></div>
 
                 <div class="clock-centre"></div>
 
             </div>
 
-            <div id="suntoup-time">
+            <div
+                id="suntoup-time"
+                aria-label="Digital Suntoup time"
+            >
                 --:--:--
             </div>
+
+            <p class="instrument-note">
+                40 hours · 50 minutes · 50 seconds
+            </p>
 
         </section>
 
