@@ -2,81 +2,142 @@
 Suntoup Standard Time
 
 1 Suntoup second = 1 Earth second
-50 seconds = 1 minute
-50 minutes = 1 hour
-40 hours = 1 day
+50 seconds = 1 Suntoup minute
+50 minutes = 1 Suntoup hour
+40 hours = 1 Suntoup day
 
 100,000 seconds per Suntoup day.
 */
 
 // Temporary epoch.
-// This can be changed later.
+// We can replace this later with Matt's chosen starting point.
 const suntoupEpoch = new Date("2026-08-04T00:00:00-04:00");
 
 const secondsPerMinute = 50;
 const minutesPerHour = 50;
+const hoursPerDay = 40;
 
 const secondsPerHour =
   secondsPerMinute * minutesPerHour;
 
 const secondsPerDay =
-  secondsPerHour * 40;
+  secondsPerHour * hoursPerDay;
 
 function pad(number) {
   return String(number).padStart(2, "0");
 }
 
-function getEarthTimeZoneName(now) {
-  const parts = new Intl.DateTimeFormat(undefined, {
-    timeZoneName: "long"
-  }).formatToParts(now);
+function createClockMarkers() {
+  const markerContainer =
+    document.getElementById("clock-markers");
 
-  const timeZonePart =
-    parts.find(part => part.type === "timeZoneName");
+  markerContainer.innerHTML = "";
 
-  return timeZonePart
-    ? timeZonePart.value
-    : "Local Time";
+  const totalMarkers =
+    hoursPerDay * 5;
+
+  for (let markerNumber = 0;
+       markerNumber < totalMarkers;
+       markerNumber++) {
+
+    const marker =
+      document.createElement("div");
+
+    const rotation =
+      markerNumber * (360 / totalMarkers);
+
+    marker.className = "clock-marker";
+    marker.style.setProperty(
+      "--rotation",
+      `${rotation}deg`
+    );
+
+    const isHourMarker =
+      markerNumber % 5 === 0;
+
+    if (isHourMarker) {
+      marker.classList.add("major");
+
+      const number =
+        document.createElement("span");
+
+      const hourNumber =
+        markerNumber === 0
+          ? hoursPerDay
+          : markerNumber / 5;
+
+      number.className = "clock-number";
+      number.textContent = hourNumber;
+
+      marker.appendChild(number);
+    }
+
+    markerContainer.appendChild(marker);
+  }
 }
 
-function updateClocks() {
+function updateClock() {
   const now = new Date();
 
-  const earthTime =
-    `${pad(now.getHours())}:` +
-    `${pad(now.getMinutes())}:` +
-    `${pad(now.getSeconds())}`;
-
-  document.getElementById("earth-time").textContent =
-    earthTime;
-
-  document.getElementById("earth-label").textContent =
-    `${getEarthTimeZoneName(now)} (Earth)`;
+  const elapsedMilliseconds =
+    now - suntoupEpoch;
 
   const elapsedSeconds =
-    Math.floor((now - suntoupEpoch) / 1000);
+    elapsedMilliseconds / 1000;
 
-  let secondsToday =
-    ((elapsedSeconds % secondsPerDay) + secondsPerDay)
-    % secondsPerDay;
+  const secondsToday =
+    ((elapsedSeconds % secondsPerDay)
+      + secondsPerDay)
+      % secondsPerDay;
+
+  const wholeSecondsToday =
+    Math.floor(secondsToday);
 
   const suntoupHours =
-    Math.floor(secondsToday / secondsPerHour);
+    Math.floor(
+      wholeSecondsToday / secondsPerHour
+    );
 
-  secondsToday %= secondsPerHour;
+  const secondsRemainingAfterHours =
+    wholeSecondsToday % secondsPerHour;
 
   const suntoupMinutes =
-    Math.floor(secondsToday / secondsPerMinute);
+    Math.floor(
+      secondsRemainingAfterHours
+      / secondsPerMinute
+    );
 
   const suntoupSeconds =
-    secondsToday % secondsPerMinute;
+    secondsRemainingAfterHours
+    % secondsPerMinute;
 
   document.getElementById("suntoup-time").textContent =
     `${pad(suntoupHours)}:` +
     `${pad(suntoupMinutes)}:` +
     `${pad(suntoupSeconds)}`;
+
+  const secondProgress =
+    (secondsToday % secondsPerMinute)
+    / secondsPerMinute;
+
+  const minuteProgress =
+    (secondsToday % secondsPerHour)
+    / secondsPerHour;
+
+  const hourProgress =
+    secondsToday / secondsPerDay;
+
+  document.getElementById("second-hand").style.transform =
+    `translateX(-50%) rotate(${secondProgress * 360}deg)`;
+
+  document.getElementById("minute-hand").style.transform =
+    `translateX(-50%) rotate(${minuteProgress * 360}deg)`;
+
+  document.getElementById("hour-hand").style.transform =
+    `translateX(-50%) rotate(${hourProgress * 360}deg)`;
+
+  requestAnimationFrame(updateClock);
 }
 
-updateClocks();
-
-setInterval(updateClocks, 250);
+createClockMarkers();
+updateClock();
