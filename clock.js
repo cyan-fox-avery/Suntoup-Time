@@ -15,16 +15,28 @@ const suntoupEpoch = new Date("2026-08-04T00:00:00-04:00");
 
 const secondsPerMinute = 50;
 const minutesPerHour = 50;
-const hoursPerDay = 40;
 
 const secondsPerHour =
   secondsPerMinute * minutesPerHour;
 
 const secondsPerDay =
-  secondsPerHour * hoursPerDay;
+  secondsPerHour * 40;
 
 function pad(number) {
   return String(number).padStart(2, "0");
+}
+
+function getEarthTimeZoneName(now) {
+  const parts = new Intl.DateTimeFormat(undefined, {
+    timeZoneName: "long"
+  }).formatToParts(now);
+
+  const timeZonePart =
+    parts.find(part => part.type === "timeZoneName");
+
+  return timeZonePart
+    ? timeZonePart.value
+    : "Local Time";
 }
 
 function updateClocks() {
@@ -38,11 +50,11 @@ function updateClocks() {
   document.getElementById("earth-time").textContent =
     earthTime;
 
+  document.getElementById("earth-label").textContent =
+    `${getEarthTimeZoneName(now)} (Earth)`;
+
   const elapsedSeconds =
     Math.floor((now - suntoupEpoch) / 1000);
-
-  const completedDays =
-    Math.floor(elapsedSeconds / secondsPerDay);
 
   let secondsToday =
     ((elapsedSeconds % secondsPerDay) + secondsPerDay)
@@ -58,9 +70,6 @@ function updateClocks() {
 
   const suntoupSeconds =
     secondsToday % secondsPerMinute;
-
-  document.getElementById("suntoup-day").textContent =
-    `Day ${completedDays + 1}`;
 
   document.getElementById("suntoup-time").textContent =
     `${pad(suntoupHours)}:` +
